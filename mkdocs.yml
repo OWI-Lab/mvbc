@@ -1,0 +1,54 @@
+site_name: mvbc
+repo_url: https://github.com/WEILMAX/mvbc
+site_url: https://WEILMAX.github.io/mvbc
+site_description: This is a Python package to directly interact with the Meetnet Vlaamse Banken api and get the publically available weather data in the Belgian North Sea directly.
+site_author: Maximillian Weil
+edit_uri: edit/main/docs/
+repo_name: WEILMAX/mvbc
+copyright: Maintained by <a href="https://WEILMAX.com">Florian</a>.
+
+nav:
+  - Home: index.md
+  - Modules: modules.md
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          setup_commands:
+            - import sys
+            - sys.path.append('../')
+theme:
+  name: material
+  feature:
+    tabs: true
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: white
+      accent: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/WEILMAX/mvbc
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/mvbc
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
