@@ -49,10 +49,10 @@ def datadir(tmpdir, request):
     # Create folder tests/test_files (same name as test module file)
     # Put <filename> in that folder
     # Create tests like:
-    >>> def test_file_stuff(datadir):
-    >>>     path = datadir.join("<filename>")
-    >>>     # Open file using `path`
-    >>>     # Test something with file contents
+    # def test_file_stuff(datadir):
+    #     path = datadir.join("<filename>")
+    #     Open file using `path`
+    #     Test something with file contents
     """
     filename = request.module.__file__
     test_dir, _ = os.path.splitext(filename)
