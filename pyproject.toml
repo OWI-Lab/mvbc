@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mvbc"
-version = "0.0.2"
+version = "0.0.3"
 description = "This is a Python package to directly interact with the Meetnet Vlaamse Banken api and get the publically available weather data in the Belgian North Sea directly."
 authors = ["Maximillian Weil <maximillian.f.weil@gmail.com>"]
 repository = "https://github.com/WEILMAX/mvbc"
