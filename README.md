@@ -95,9 +95,9 @@ mvbc_<weather station>_<Parameter Name>
 For example, you might see columns such as:
 
 ```text
-mvbc_Thorntonbank_WindSpeed
+mvbc_Thorntonbank_Wind_speed
 mvbc_Wandelaar_Temperature
-mvbc_Westhinder_WaveHeight
+mvbc_Westhinder_Wave_height
 ```
 
 ### 6. Data and Weather Stations
