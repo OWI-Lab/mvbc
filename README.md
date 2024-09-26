@@ -36,18 +36,52 @@ Once you have the package installed, you can start using it to retrieve weather 
 ```python
 import mvbc
 
-# Initialize the client
-client = mvbc.Client(username="MEETNET_USERNAME", password="MEETNET_PASSWORD")
+# If you are using environmental variables
+mvbc_username = os.getenv('MEETNET_USERNAME') # Replace with your usernam
+mvbc_password = os.getenv('MEETNET_PASSWORD') # Replace with your password
 
-# Get weather data
-df_weather = client.get_weather_data()
+# Use the credentials
+creds = Credentials(username=mvbc_username, password=mvbc_password)
+b=Base(creds)
+b.ping()
 
-# Display the weather data
-print(df_weather)
+# Specify the timeframe of interest
+dt_start = datetime(2022,9,30,tzinfo=utc) # timestamp with timezone
+dt_end = datetime(2022,10,1,tzinfo=utc)
 
-# You can also retrieve unfiltered data and weather station information
-df_unfiltered = client.get_weather_station_info()
+# Get the information about the avialble data points
+c = Catalog(credentials=creds)
+df_unfiltered = c.data_points()
 print(df_unfiltered)
+```
+
+The `df_unfiltered` DataFrame contains the information about the available data and the weather stations.
+
+There are two main ways to retrieve data:
+
+1. **By Weather Station Name**: You can directly specify the name of the weather station to get data.
+
+```python
+weather_station = 'Wandelaar'
+df_weather = \
+    dg.get_data_by_weatherstation(
+        weather_station,
+        dt_start,
+        dt_end,
+        creds,
+        df_unfiltered
+    )
+```
+
+2. **By Asset Location**: You can provide the location (latitude, longitude) of your asset (e.g., an offshore wind turbine) at sea, and the package will fetch data from the closest weather station.
+
+```python
+# Replace this with location of interest in the from of [Latitude, Longitude]
+
+location_of_interest = [2.81555595289144, 51.6918319416294]   
+df_weather, weatherstation_information, all_wetaherstations = dg.get_longterm_weather_data(location_of_interest, dt_start, dt_end, df=df_unfiltered, credentials=creds)
+# Data comes in for every 30min, but you can resample to the time you want (e.g. 10 minutes)
+df_weather = df_weather.resample('10T', axis=0).interpolate(method='linear', axis=0, limit=12)
 ```
 
 ### 5. Available Data Format
@@ -70,27 +104,7 @@ mvbc_Westhinder_WaveHeight
 
 The additional information about available weather stations and data can be accessed via the `df_unfiltered` DataFrame. This provides you with metadata about the stations and available parameters.
 
-### 7. Getting Data by Weather Station or Location
-
-There are two main ways to retrieve data:
-
-1. **By Weather Station Name**: You can directly specify the name of the weather station to get data.
-   
-2. **By Asset Location**: You can provide the location (latitude, longitude) of your asset (e.g., an offshore wind turbine) at sea, and the package will fetch data from the closest weather station.
-
-Example of getting data by location:
-
-```python
-# Specify the latitude and longitude of your asset (e.g., offshore wind turbine)
-latitude = 51.5
-longitude = 2.5
-
-# Get weather data for the closest station to this location
-df_weather_closest = client.get_weather_data_by_location(latitude, longitude)
-print(df_weather_closest)
-```
-
-### 8. Using Preferred Weather Stations
+### 7. Using Preferred Weather Stations
 
 You can also set a list of **preferred** weather stations to prioritize fetching data from. The default preferred stations are:
 
