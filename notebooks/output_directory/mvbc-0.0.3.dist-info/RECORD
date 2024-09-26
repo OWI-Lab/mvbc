@@ -1,0 +1,11 @@
+mvbc/__init__.py,sha256=CIeRqsdG0eM-qQU0SYgyR-Z68z6DvO_iKJd3lFc8oUs,79
+mvbc/auth.py,sha256=kCZ9xxPiDiHgUIj5G5lQKQ6ycdTcWTx_tYK-4JieVtE,2069
+mvbc/client.py,sha256=gT1HhFjspJ7IZY58RYWEDsoalinAbscOWaUr35M1IAs,3221
+mvbc/config.py,sha256=ohzRHz_j7KrdKt-XXOv0zlSJyAIg27zLoCQRue1KEP8,1577
+mvbc/data_getter.py,sha256=hN41p-Qqg0b5KXtBNN1EXnbz8aXYeTtMY4-hDFxkbFE,15924
+mvbc/objects.py,sha256=4HPTCr2_x-fOrHUA2AogBLe61tegvUA9RKUMj2mmfpE,10840
+mvbc/version.py,sha256=3P1brfm88t1bEv9ccKSwSc64RvlxBgm7aGhj8po1vvc,1609
+mvbc-0.0.3.dist-info/LICENSE,sha256=mVt57Sk-WlfHVTMMkal-PwlGCRIJ-rfUUNOoWZ2tDOg,1075
+mvbc-0.0.3.dist-info/METADATA,sha256=1c54S38Fr_1tH4BFgWXmSoX-BwRPKGz_9akQ4JOCkEI,3551
+mvbc-0.0.3.dist-info/WHEEL,sha256=sP946D7jFCHeNz5Iq4fL4Lu-PrWrFsgfLXbbkciIZwg,88
+mvbc-0.0.3.dist-info/RECORD,,

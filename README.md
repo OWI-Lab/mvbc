@@ -1,49 +1,111 @@
-# mvbc
 
-[![Release](https://img.shields.io/github/v/release/WEILMAX/mvbc)](https://img.shields.io/github/v/release/WEILMAX/mvbc)
-[![Build status](https://img.shields.io/github/actions/workflow/status/WEILMAX/mvbc/main.yml?branch=main)](https://github.com/WEILMAX/mvbc/actions/workflows/main.yml?query=branch%3Amain)
-[![codecov](https://codecov.io/gh/WEILMAX/mvbc/branch/main/graph/badge.svg)](https://codecov.io/gh/WEILMAX/mvbc)
-[![Commit activity](https://img.shields.io/github/commit-activity/m/WEILMAX/mvbc)](https://img.shields.io/github/commit-activity/m/WEILMAX/mvbc)
-[![License](https://img.shields.io/github/license/WEILMAX/mvbc)](https://img.shields.io/github/license/WEILMAX/mvbc)
+# MVBC (Meetnet Vlaamse Banken Client)
 
-This is a Python package to directly interact with the Meetnet Vlaamse Banken api and get the publically available weather data in the Belgian North Sea directly.
+The `mvbc` package is a Python client to interact with the **Meetnet Vlaamse Banken API**. This package provides easy access to public weather data from the Belgian North Sea directly, and it returns the data in a pandas DataFrame format, making it convenient for further analysis.
 
-- **Github repository**: <https://github.com/WEILMAX/mvbc/>
-- **Documentation** <https://WEILMAX.github.io/mvbc/>
+## Getting Started
 
-## Getting started with your project
+### 1. Create an Account
 
-First, create a repository on GitHub with the same name as this project, and then run the following commands:
+To use the Meetnet Vlaamse Banken API, you first need to create an account and get credentials:
 
-```bash
-git init -b main
-git add .
-git commit -m "init commit"
-git remote add origin git@github.com:WEILMAX/mvbc.git
-git push -u origin main
-```
+1. Go to the [Meetnet Vlaamse Banken registration page](https://meetnetvlaamsebanken.be/account/register?signin=37ffaa0bfd8682563a8290c0d73f7f95).
+2. Once registered, you will obtain your `MEETNET_USERNAME` and `MEETNET_PASSWORD`.
 
-Finally, install the environment and the pre-commit hooks with
+### 2. Set Credentials as Environment Variables
+
+For best security practices, store your credentials in environment variables. You can set them as follows in your terminal:
 
 ```bash
-make install
+export MEETNET_USERNAME="your_username"
+export MEETNET_PASSWORD="your_password"
 ```
 
-You are now ready to start development on your project!
-The CI/CD pipeline will be triggered when you open a pull request, merge to main, or when you create a new release.
+### 3. Install the Package
 
-To finalize the set-up for publishing to PyPI or Artifactory, see [here](https://fpgmaas.github.io/cookiecutter-poetry/features/publishing/#set-up-for-pypi).
-For activating the automatic documentation with MkDocs, see [here](https://fpgmaas.github.io/cookiecutter-poetry/features/mkdocs/#enabling-the-documentation-on-github).
-To enable the code coverage reports, see [here](https://fpgmaas.github.io/cookiecutter-poetry/features/codecov/).
+You can install the `mvbc` package via pip:
 
-## Releasing a new version
+```bash
+pip install mvbc
+```
 
-- Create an API Token on [PyPI](https://pypi.org/).
-- Add the API Token to your projects secrets with the name `PYPI_TOKEN` by visiting [this page](https://github.com/WEILMAX/mvbc/settings/secrets/actions/new).
-- Create a [new release](https://github.com/WEILMAX/mvbc/releases/new) on Github.
-- Create a new tag in the form `*.*.*`.
-- For more details, see [here](https://fpgmaas.github.io/cookiecutter-poetry/features/cicd/#how-to-trigger-a-release).
+### 4. Using the Package
 
----
+Once you have the package installed, you can start using it to retrieve weather data. Below is an example on how to use the package to fetch data.
 
-Repository initiated with [fpgmaas/cookiecutter-poetry](https://github.com/fpgmaas/cookiecutter-poetry).
+```python
+import mvbc
+
+# Initialize the client
+client = mvbc.Client(username="MEETNET_USERNAME", password="MEETNET_PASSWORD")
+
+# Get weather data
+df_weather = client.get_weather_data()
+
+# Display the weather data
+print(df_weather)
+
+# You can also retrieve unfiltered data and weather station information
+df_unfiltered = client.get_weather_station_info()
+print(df_unfiltered)
+```
+
+### 5. Available Data Format
+
+The weather data is returned as a **pandas DataFrame** (`df_weather`) with the timestamps in the rows and columns in the format:
+
+```text
+mvbc_<weather station>_<Parameter Name>
+```
+
+For example, you might see columns such as:
+
+```text
+mvbc_Thorntonbank_WindSpeed
+mvbc_Wandelaar_Temperature
+mvbc_Westhinder_WaveHeight
+```
+
+### 6. Data and Weather Stations
+
+The additional information about available weather stations and data can be accessed via the `df_unfiltered` DataFrame. This provides you with metadata about the stations and available parameters.
+
+### 7. Getting Data by Weather Station or Location
+
+There are two main ways to retrieve data:
+
+1. **By Weather Station Name**: You can directly specify the name of the weather station to get data.
+   
+2. **By Asset Location**: You can provide the location (latitude, longitude) of your asset (e.g., an offshore wind turbine) at sea, and the package will fetch data from the closest weather station.
+
+Example of getting data by location:
+
+```python
+# Specify the latitude and longitude of your asset (e.g., offshore wind turbine)
+latitude = 51.5
+longitude = 2.5
+
+# Get weather data for the closest station to this location
+df_weather_closest = client.get_weather_data_by_location(latitude, longitude)
+print(df_weather_closest)
+```
+
+### 8. Using Preferred Weather Stations
+
+You can also set a list of **preferred** weather stations to prioritize fetching data from. The default preferred stations are:
+
+- Thorntonbank
+- Wandelaar
+- Westhinder
+
+You can provide your own list of preferred stations as follows:
+
+```python
+preferred_stations = ["Westhinder", "Nieuwpoort"]
+df_preferred = client.get_weather_data(preferred_stations=preferred_stations)
+print(df_preferred)
+```
+
+## Example Usage
+
+For a full usage example, check out the provided Jupyter notebook (`mvbc_tutorial.ipynb`) which showcases different ways of fetching data, including using preferred weather stations and fetching data by location.

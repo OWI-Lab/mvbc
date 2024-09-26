@@ -9,7 +9,7 @@ Maximillian Weil
 """
 
 from datetime import datetime, timedelta
-from typing import Any, List
+from typing import Any
 
 import geopy.distance
 import pandas as pd
@@ -66,7 +66,7 @@ def get_longterm_weather_data(
     credentials: Credentials,
     prefered: list[str] = ["Thorntonbank", "Wandelaar", "Westhinder"],
     information: list[str] = ["ParameterName", "Name", "Description", "ParameterUnit"],
-) -> tuple[pd.DataFrame, pd.DataFrame,  dict[datetime, pd.DataFrame]]:
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Fetches long-term weather data for the time period between `dt_start` and `dt_end` 
     for the closest weather station to the specified offshore wind turbine (OWT) location.
     Prioritizes the weather stations in the `prefered` list if available.
@@ -126,12 +126,12 @@ def get_longterm_weather_data(
     dict_data = data.get(ids=ids, start_time=dt_start, end_time=dt_end)
     df_weather = pd.concat([df_weather, get_weather_data(dict_data, df)])
     df_weather = df_weather[~df_weather.index.duplicated()]
-    return df_weather, weatherstation_information, all_wetaherstations
+    return df_weather, weatherstation_information, all_wetaherstations  # type: ignore
 
 
 def prefered_in_description(
     row: pd.Series, prefered: list[str] = ["Thorntonbank", "Wandelaar", "Westhinder"]
-) -> bool:
+):
     """Checks if a row's description contains any of the preferred weather station names.
 
     Args:
@@ -155,7 +155,7 @@ def weatherstations_with_pref(
     start_time: datetime,
     end_time: datetime,
     prefered: list[str] = ["Thorntonbank", "Wandelaar", "Westhinder"],
-) -> dict:
+):
     """Filters weather stations based on proximity to the offshore wind turbine (OWT) location, 
     prioritizing preferred stations if they are available. Returns the closest station IDs for each parameter type.
 
@@ -191,8 +191,8 @@ def weatherstations_with_pref(
 def get_weatherstation_information(
     df_unfiltered: pd.DataFrame,
     dict_closest: dict[str, str],
-    information: List[str] = ["ParameterName", "Name", "Description", "ParameterUnit"],
-) -> pd.DataFrame:
+    information=["ParameterName", "Name", "Description", "ParameterUnit"],
+):
     """Retrieves detailed information about the weather stations closest to the offshore wind turbine (OWT) 
     based on the specified parameter types.
 
@@ -351,7 +351,7 @@ def get_data_by_weatherstation(
     dt_end: datetime,
     credentials: Credentials,
     df_unfiltered: pd.DataFrame,
-) -> pd.DataFrame:
+):
     """Retrieves weather data for a specific weather station over the given time period.
 
     Args:

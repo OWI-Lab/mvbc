@@ -35,7 +35,7 @@ Maximillian Weil
 """
 
 from datetime import datetime, timedelta
-from typing import List, Dict, Optional, Any
+from typing import List, Optional
 import warnings
 import pandas as pd
 import requests
@@ -56,7 +56,7 @@ class Catalog(Base):
         Base (Base): Implements authentication and API systems verification (ping).
     """
 
-    def __init__(self, culture: str = "en-GB", *args: Any, **kwargs: Any):
+    def __init__(self, culture: str = "en-GB", *args, **kwargs):
         """Initialise the Catalog.
 
         Args:
@@ -71,9 +71,9 @@ class Catalog(Base):
         super().__init__(*args, **kwargs)
         self.catalog: str = self.get_catalog()
         self.culture: str = culture
-        self.points: Optional[pd.DataFrame] = None
+        self.points: pd.DataFrame = None  # type: ignore
 
-    def get_catalog(self) -> Any:
+    def get_catalog(self) -> str:
         """Request catalog from API
 
         Download the complete catalog as raw JSON data
@@ -92,7 +92,7 @@ class Catalog(Base):
             raise Exception("Get Catalog failed")
         return response.json()
 
-    def _unpack_culture(self, cultures: List[Dict[str, str]]) -> Optional[str]:
+    def _unpack_culture(self, cultures):
         """Extract the message for the specified culture from a list of culture dictionaries.
 
         Args:
@@ -126,7 +126,7 @@ class Catalog(Base):
         """
         df = pd.DataFrame(self.catalog["Locations"])  # type: ignore
         df["Name"] = df.Name.apply(self._unpack_culture)  # type: ignore
-        df["Description"] = df.Description.apply(self._unpack_culture)
+        df["Description"] = df.Description.apply(self._unpack_culture)  # type: ignore
         df.set_index("ID", inplace=True)
         return df
 
@@ -178,8 +178,8 @@ class Catalog(Base):
 
     def filter_parameter(
         self,
-        type_: Optional[str] = None,
-        name: Optional[str] = None,
+        type_=None,
+        name=None,
     ) -> pd.DataFrame:
         """Filters data points by parameter type or name.
 
@@ -199,9 +199,9 @@ class Catalog(Base):
             )
         # Most specific first
         if name:
-            return df[df.Parameter.eq(name)]
+            return df[df.Parameter.eq(name)]  # type: ignore
         if type_:
-            return df[df.ParameterType.eq(type_)]
+            return df[df.ParameterType.eq(type_)]  # type: ignore
         print("Nothing filtered")
         return df
 
@@ -214,13 +214,13 @@ class Data(Catalog):
         latest (str): Cached latest data from the API.
     """
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, *args, **kwargs):
         """Initialize the Data class and fetch the latest data.
         """
         super().__init__(*args, **kwargs)
         self.latest: str = self.get_latest()
 
-    def get_latest(self, ids: Optional[List[str]] = None) -> Any:
+    def get_latest(self, ids: Optional[List[str]] = None):
         """Fetches the latest data for the given parameter IDs.
 
         Args:
@@ -238,12 +238,7 @@ class Data(Catalog):
         data = {"IDs": ids}
         return requests.get(url, json=data, auth=self.auth).json()
 
-    def get(
-        self,
-        ids: List[str],
-        start_time: Optional[datetime] = None,
-        end_time: Optional[datetime] = None
-    ) -> Any:
+    def get(self, ids, start_time=None, end_time=None):
         """Fetches historical data for the given parameter IDs within the specified time range.
 
         Args:
@@ -279,7 +274,7 @@ class Data(Catalog):
                 if "Values" in test_dict_data:
                     final_ids.append(value)
                 else:
-                    warnings.warn(f"Can't get data from {value}")
+                    warnings.warn(f"Can't get data from {value}")  # type: ignore
             data = {"IDs": final_ids, "StartTime": start_time, "EndTime": end_time}
             dict_data = requests.post(url, data, auth=self.auth).json()
         return dict_data

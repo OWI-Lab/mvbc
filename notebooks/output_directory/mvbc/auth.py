@@ -5,7 +5,8 @@ from datetime import datetime
 import requests
 import pytz
 
-class BearerAuth(requests.auth.AuthBase): 
+
+class BearerAuth(requests.auth.AuthBase):
     """Custom authentication class for Meetnet Vlaamse Banken API.
 
     When an authentication handler is attached to a request, it is called during request setup
@@ -39,7 +40,7 @@ class BearerAuth(requests.auth.AuthBase):
     # setting in Sphinx's conf.py:
     #
     #       napoleon_include_special_with_doc = True
-    def __call__(self, r: requests.PreparedRequest) -> requests.PreparedRequest:
+    def __call__(self, r: requests.request) -> requests.request:
         """Add authorization header to request.
 
         The API defines that after login all the subsequent requests must have

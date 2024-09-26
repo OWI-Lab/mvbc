@@ -6,11 +6,10 @@ Module to fetch the Data of the Flemish Banks Monitoring Network via API request
 Consult the `API Documentation <https://api.meetnetvlaamsebanken.be/V2-help>`_
 for more information on the different endpoints, request and response models.
 """
-from typing import Optional, Any
+from typing import Optional
 from datetime import datetime
 import requests
 import pytz
-
 
 from .auth import BearerAuth
 from .config import Credentials
@@ -42,7 +41,7 @@ class Base:
         self.auth: Optional[BearerAuth] = None
         self.login()
 
-    def login(self) -> Optional[BearerAuth]:
+    def login(self):
         """
         Get the access token.
 
@@ -51,7 +50,7 @@ class Base:
             which can be used for authentication
         """
         url = self.url + "/Token"
-        now = datetime.now(pytz.timezone("Europe/Brussels")).astimezone(pytz.UTC)
+        now = datetime.now(pytz.timezone("Europe/Brussels")).astimezone(pytz.UTC)  # type: ignore
         if self.auth and now < self.auth.expires:
             return
 
@@ -72,7 +71,7 @@ class Base:
         expires = data[".expires"]
         self.auth = BearerAuth(token, expires)
 
-    def ping(self, login: bool = True) -> Any:
+    def ping(self, login: bool = True) -> str:
         """Ping request
 
         The ping request can be used to check if this system is up and running and/or
