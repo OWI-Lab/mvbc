@@ -9,10 +9,21 @@ from datetime import datetime
 from unittest.mock import MagicMock
 from mvbc.config import Credentials
 from mvbc.objects import Data
+import toml
 
 logger = logging.getLogger(__name__)
 
-VERSION = "0.2.2"
+# Function to dynamically load the version from pyproject.toml
+def get_version_from_toml() -> str:
+    """Reads the version from pyproject.toml file."""
+    pyproject_path = os.path.join(os.path.dirname(__file__), "../pyproject.toml")
+    with open(pyproject_path, 'r') as f:
+        pyproject_data = toml.load(f)
+    return pyproject_data["tool"]["poetry"]["version"]
+
+# Get the current version from pyproject.toml
+
+VERSION = get_version_from_toml()
 
 # Add custom options to pytest. Here we define the addition of an 'url' argument
 # so you could run `pytest --url <url>` to specify an external url to check real time

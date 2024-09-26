@@ -1,3 +1,3 @@
 # Initialize the package
-__version__ = "0.0.6"
-__author__ = "Maximillian Weil"
+__version__: str = '0.0.7'
+__author__:str = "Maximillian Weil"

@@ -15,8 +15,7 @@ Attributes:
 """
 import re
 from typing import Optional, NamedTuple
-
-__version__: str = "0.2.2"
+from .__init__ import __version__
 
 _REGEX = r"(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)(?:\-(?P<release>.*)\.(?P<num>\d+))?"
 

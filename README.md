@@ -1,7 +1,7 @@
 
 # MVBC (Meetnet Vlaamse Banken Client)
 
-The `mvbc` package is a Python client to interact with the **Meetnet Vlaamse Banken API**. This package provides easy access to public weather data from the Belgian North Sea directly, and it returns the data in a pandas DataFrame format, making it convenient for further analysis.
+The `mvbc` package is a Python client to interact with the [**Meetnet Vlaamse Banken API**](https://meetnetvlaamsebanken.be/). This package provides easy access to public weather data from the Belgian North Sea directly, and it returns the data in a pandas DataFrame format, making it convenient for further analysis.
 
 ## Getting Started
 
@@ -78,7 +78,7 @@ df_weather = \
 ```python
 # Replace this with location of interest in the from of [Latitude, Longitude]
 
-location_of_interest = [2.81555595289144, 51.6918319416294]   
+location_of_interest = [2.81, 51.69]   
 df_weather, weatherstation_information, all_wetaherstations = dg.get_longterm_weather_data(location_of_interest, dt_start, dt_end, df=df_unfiltered, credentials=creds)
 # Data comes in for every 30min, but you can resample to the time you want (e.g. 10 minutes)
 df_weather = df_weather.resample('10T', axis=0).interpolate(method='linear', axis=0, limit=12)

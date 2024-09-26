@@ -1,13 +1,13 @@
 import pytest
 from hypothesis import given, strategies as hy
-
-from mvbc.version import __version__, parse_version
+import mvbc
+from mvbc.version import parse_version
 
 from .conftest import VERSION
 
 
 def test_version():
-    assert __version__ == VERSION
+    assert mvbc.__version__ == VERSION
 
 
 @pytest.mark.success
