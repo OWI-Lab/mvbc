@@ -1,7 +1,7 @@
 
 # MVBC (Meetnet Vlaamse Banken Client)
 
-The `mvbc` package is a Python client to interact with the [**Meetnet Vlaamse Banken API**](https://meetnetvlaamsebanken.be/). This package provides easy access to public weather data from the Belgian North Sea directly, and it returns the data in a pandas DataFrame format, making it convenient for further analysis.
+The `mvbc` package is a Python client to interact with the [**Meetnet Vlaamse Banken API**](https://meetnetvlaamsebanken.be/). This package provides easy access to public weather and metocean data from the Belgian North Sea directly, and it returns the data in a pandas DataFrame format, making it convenient for further analysis.
 
 ## Getting Started
 
@@ -12,7 +12,7 @@ To use the Meetnet Vlaamse Banken API, you first need to create an account and g
 1. Go to the [Meetnet Vlaamse Banken registration page](https://meetnetvlaamsebanken.be/account/register?signin=37ffaa0bfd8682563a8290c0d73f7f95).
 2. Once registered, you will obtain your `MEETNET_USERNAME` and `MEETNET_PASSWORD`.
 
-### 2. Set Credentials as Environment Variables
+### 2. Set Credentials as Environment Variables (Optional)
 
 For best security practices, store your credentials in environment variables. You can set them as follows in your terminal:
 
@@ -20,6 +20,8 @@ For best security practices, store your credentials in environment variables. Yo
 export MEETNET_USERNAME="your_username"
 export MEETNET_PASSWORD="your_password"
 ```
+
+Alternatively, you can decide to skip this step and provide your credentials directly into the Notebook. However, this poses a security risk when sharing your notebooks.
 
 ### 3. Install the Package
 
@@ -34,32 +36,41 @@ pip install mvbc
 Once you have the package installed, you can start using it to retrieve weather data. Below is an example on how to use the package to fetch data.
 
 ```python
-import mvbc
+import os
+from pytz import utc
+from datetime import datetime
+
+# Import vub Meetenet Vlaamse Banken API functions
+from mvbc.config import Credentials
+from mvbc.client import Base
+from mvbc.objects import Catalog, Data
+import mvbc.data_getter as dg
 
 # If you are using environmental variables
-mvbc_username = os.getenv('MEETNET_USERNAME') # Replace with your usernam
-mvbc_password = os.getenv('MEETNET_PASSWORD') # Replace with your password
+mvbc_username = os.getenv('MEETNET_USERNAME') # Collects your username
+mvbc_password = os.getenv('MEETNET_PASSWORD') # Collects your password
 
 # Use the credentials
 creds = Credentials(username=mvbc_username, password=mvbc_password)
+
+# Check the connection (optional)
 b=Base(creds)
-b.ping()
+b.ping() # This should confirm your ability to login
 
 # Specify the timeframe of interest
 dt_start = datetime(2022,9,30,tzinfo=utc) # timestamp with timezone
 dt_end = datetime(2022,10,1,tzinfo=utc)
 
-# Get the information about the avialble data points
+# Get the information about the avialable data points
 c = Catalog(credentials=creds)
 df_unfiltered = c.data_points()
-print(df_unfiltered)
 ```
 
 The `df_unfiltered` DataFrame contains the information about the available data and the weather stations.
 
 There are two main ways to retrieve data:
 
-1. **By Weather Station Name**: You can directly specify the name of the weather station to get data.
+1. **By Weather Station Name**: You can directly specify the name of the weather station to get data. A map of weather stations is available here; https://meetnetvlaamsebanken.be/map 
 
 ```python
 weather_station = 'Wandelaar'
