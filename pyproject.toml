@@ -13,9 +13,8 @@ packages = [
 [tool.poetry.dependencies]
 python = ">=3.9,<4.0"
 numpy = ">=1.19.4"
-pandas = ">=1.15"
+pandas = ">=1.1.5"
 geopy = "^2.4.1"
-pydantic = "<2.0"
 requests = "^2.32.3"
 
 [tool.poetry.group.dev.dependencies]
