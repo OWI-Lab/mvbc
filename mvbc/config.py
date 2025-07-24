@@ -17,7 +17,7 @@ Examples:
     >>> s = Credentials()
 """
 import os
-from typing import Optional
+from typing import Any, Optional, Union
 from dotenv import load_dotenv
 
 
@@ -45,7 +45,7 @@ class Credentials:
         env_file_encoding: str = "utf-8",
     ):
         if env_file is not None:
-            load_dotenv(env_file, env_file_encoding)  # doesn't override env vars
+            load_dotenv(env_file, encoding=env_file_encoding)  # doesn't override env vars
         env_username = os.getenv("MVBC_USERNAME")
         env_password = os.getenv("MVBC_PASSWORD")
 
@@ -54,7 +54,6 @@ class Credentials:
         final_password = password if password is not None else env_password
 
         # Validate required fields
-        errors = []
         if final_username is None:
             raise ValidationError("MVBC_USERNAME is not set")
         if final_password is None:
@@ -64,7 +63,7 @@ class Credentials:
         self.username: str = final_username
         self.password: str = final_password
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: Any) -> bool:
         """Allow comparison with dictionaries."""
         if isinstance(other, dict):
             return other == {"username": self.username, "password": self.password}
