@@ -33,7 +33,7 @@ class Credentials:
 
     Values not passed as keyword arguments when initializing this class will be looked up
     by reading from the environment. Check the env variables MEETNET_USERNAME and MEETNET_PASSWORD.
-    The priority for lookup is (1) keyword arguments (2) environment variables and (3) `.env` file.
+    The priority for lookup is (1) keyword arguments (2) `.env` file and (3) environment variables .
 
     """
 
