@@ -32,7 +32,7 @@ class Credentials:
     The model initialiser will attempt to determine the values of the fields.
 
     Values not passed as keyword arguments when initializing this class will be looked up
-    by reading from the environment. Check the env variables MVBC_USERNAME and MVBC_PASSWORD.
+    by reading from the environment. Check the env variables MEETNET_USERNAME and MEETNET_PASSWORD.
     The priority for lookup is (1) keyword arguments (2) environment variables and (3) `.env` file.
 
     """
@@ -45,9 +45,9 @@ class Credentials:
         env_file_encoding: str = "utf-8",
     ):
         if env_file is not None:
-            load_dotenv(env_file, encoding=env_file_encoding)  # doesn't override env vars
-        env_username = os.getenv("MVBC_USERNAME")
-        env_password = os.getenv("MVBC_PASSWORD")
+            load_dotenv(env_file, encoding=env_file_encoding, override=True)
+        env_username = os.getenv("MEETNET_USERNAME")
+        env_password = os.getenv("MEETNET_PASSWORD")
 
         # Override with direct parameters (highest priority)
         final_username = username if username is not None else env_username
@@ -55,9 +55,9 @@ class Credentials:
 
         # Validate required fields
         if final_username is None:
-            raise ValidationError("MVBC_USERNAME is not set")
+            raise ValidationError("MEETNET_USERNAME is not set")
         if final_password is None:
-            raise ValidationError("MVBC_PASSWORD is not set")
+            raise ValidationError("MEETNET_PASSWORD is not set")
 
         # Set the attributes
         self.username: str = final_username
