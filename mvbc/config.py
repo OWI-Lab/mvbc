@@ -41,11 +41,11 @@ class Credentials:
         self,
         username: Optional[str] = None,
         password: Optional[str] = None,
-        env_file: Optional[str] = None,
-        env_file_encoding: str = "utf-8",
+        _env_file: Optional[str] = None,
+        _env_file_encoding: str = "utf-8",
     ):
-        if env_file is not None:
-            load_dotenv(env_file, encoding=env_file_encoding, override=True)
+        if _env_file is not None:
+            load_dotenv(_env_file, encoding=_env_file_encoding, override=True)
         env_username = os.getenv("MEETNET_USERNAME")
         env_password = os.getenv("MEETNET_PASSWORD")
 

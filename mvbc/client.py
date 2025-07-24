@@ -34,7 +34,7 @@ class Base:
     def __init__(self, credentials: Optional[Credentials] = None):
 
         if credentials is None:
-            credentials = Credentials()
+            credentials = Credentials()  # type: ignore
 
         self.user: str = credentials.username
         self.password: str = credentials.password
@@ -53,7 +53,7 @@ class Base:
         url = self.url + "/Token"
         now = datetime.now(pytz.timezone("Europe/Brussels")).astimezone(pytz.UTC)
         if self.auth and now < self.auth.expires:
-            return None
+            return
 
         response = requests.post(
             url,
@@ -71,7 +71,6 @@ class Base:
         token = data["access_token"]
         expires = data[".expires"]
         self.auth = BearerAuth(token, expires)
-        return self.auth
 
     def ping(self, login: bool = True) -> Any:
         """Ping request
