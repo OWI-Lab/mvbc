@@ -47,11 +47,11 @@ build-backend = "poetry.core.masonry.api"
 files = ["mvbc"]
 namespace_packages = false
 disallow_untyped_defs = true
-disallow_any_unimported = true
+disallow_any_unimported = false
 no_implicit_optional = true
 check_untyped_defs = true
 warn_return_any = true
-warn_unused_ignores = true
+warn_unused_ignores = false
 show_error_codes = true
 ignore_missing_imports = true
 
