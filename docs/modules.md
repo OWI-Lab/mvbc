@@ -1,1 +1,1 @@
-::: mvbc.foo
+::: mvbc
